@@ -25,6 +25,7 @@ For Apache with mod_php:
     </VirtualHost>
 
 phplog2gelf.py basically does 'tail -F', so it should be executed separately:
+
     /path/to/phplog2gelf.py --vhost example.com /var/log/php/example.com.php.log
 
 Command line parameters
@@ -34,7 +35,7 @@ All scripts understand the following command line parameters:
 * `--host` to specify graylog2 server
 * `--port` to specify graylog2 GELF port
 * `--facility` to specify log facility
-* `--vhost` to add an extra 'term' to all log messages. This allows you to configure per-virtualhost log handlers (on the expense of running N additional processes, of course) and then filter logs in graylog2 accordingly.
+* `--vhost` to add an extra field called 'vhost' to all log messages. This allows you to configure per-virtualhost log handlers (on the expense of running N additional processes, of course) and then filter logs in graylog2 accordingly.
 
 accesslog2gelf.py
 -----------------
@@ -61,5 +62,6 @@ Credits
 =======
 
 Copyright (c) 2012, Anton Tolchanov
+
 The scripts are licensed under MIT license.
 

@@ -19,7 +19,7 @@ parser = argparse.ArgumentParser(description='Watches php error log and delivers
 parser.add_argument('--host', dest='host', default='localhost', help='graylog2 server hostname (default: localhost)')
 parser.add_argument('--port', dest='port', default='12201', help='graylog2 server port (default: 12201)')
 parser.add_argument('--facility', dest='facility', default='php_log', help='logging facility (default: php_log)')
-parser.add_argument('--vhost', dest='vhost', help='Add additional "vhost" term to all log records. This can be used to differentiate between virtual hosts.')
+parser.add_argument('--vhost', dest='vhost', help='Add additional "vhost" field to all log records. This can be used to differentiate between virtual hosts.')
 parser.add_argument('filepath', help='path to PHP error log file')
 args = parser.parse_args()
 
