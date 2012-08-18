@@ -19,7 +19,7 @@ For Apache with mod_php:
       ServerName example.com
       DocumentRoot /var/www/example.com
 
-      ErrorLog "| /path/to/errorlog2gelf.py --vhost example.com > /var/log/apache/error.log"
+      ErrorLog "|| /path/to/errorlog2gelf.py --vhost example.com"
       CustomLog "|| /path/to/accesslog2gelf.py --vhost example.com" "%V %h %u \"%r\" %>s %b \"%{Referer}i\""
       php_admin_value error_log "/var/log/php/example.com.php.log"
     </VirtualHost>
