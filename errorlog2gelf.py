@@ -18,11 +18,10 @@ parser.add_argument('--facility', dest='facility', default='access_log', help='l
 parser.add_argument('--vhost', dest='vhost', help='Add additional "vhost" field to all log records. This can be used to differentiate between virtual hosts.')
 args = parser.parse_args()
 
-regexp = '^\[[^]]*\] \[([^]]*)\] \[client ([0-9\.]+)\] (.*)'
+regexp = '^\[[^]]*\] \[([^]]*)\] \[client (?P<ipaddr>[0-9\.]+)\] (.*)'
 
 baserecord = {}
-if args.vhost:
-    baserecord['vhost'] = args.vhost
+if args.vhost: baserecord['vhost'] = args.vhost
 
 logger = logging.getLogger(args.facility)
 logger.setLevel(logging.DEBUG)
@@ -36,7 +35,7 @@ while True:
     matches = re.search(regexp, line)
     if matches:
         record = baserecord
-        record['ipadr'] = matches.group(2)
+        record.update(matches.groupdict())
 	adapter = logging.LoggerAdapter(logging.getLogger(args.facility), record)
         if args.vhost:
             adapter.error('%s %s %s: %s' % (matches.group(2), args.vhost, matches.group(1), matches.group(3)))

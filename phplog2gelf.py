@@ -52,15 +52,13 @@ logger.setLevel(logging.DEBUG)
 logger.addHandler(graypy.GELFHandler(args.host, int(args.port), debugging_fields=False))
 
 record = {}
-if args.vhost:
-    record['vhost'] = args.vhost
+if args.vhost: record['vhost'] = args.vhost
 
 adapter = logging.LoggerAdapter(logging.getLogger(args.facility), record)
 
 def flush_message(message):
     """Flush accumulated multi-line message to graylog2 server"""
-    if message != '':
-        adapter.info(message.rstrip())
+    if message != '': adapter.info(message.rstrip())
 
 message = ''
 while True:

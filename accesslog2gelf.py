@@ -24,8 +24,7 @@ As specified above, this requires the following line in apache configuration:
     CustomLog "||/path/to/accesslog2gelf.py" "%V %h %u \"%r\" %>s %b \"%{Referer}i\""
 
 """
-regexp = '^(\S+) (\S+) (\S+) "([^"]*)" (\S+) (\S+) "([^"]*)"$'
-fields = 'host ipaddr username request status size referer'.split()
+regexp = '^(?P<host>\S+) (?P<ipaddr>\S+) (?P<username>\S+) "(?P<request>[^"]*)" (?P<status>\S+) (?P<size>\S+) "(?P<referer>[^"]*)"$'
 
 baserecord = {}
 if args.vhost:
@@ -41,14 +40,11 @@ while True:
     matches = re.search(regexp, line)
     if matches:
         record = baserecord
-        for i in range(len(fields)):
-            record[fields[i]] =  matches.group(i+1)
+        record.update(matches.groupdict())
         adapter = logging.LoggerAdapter(logging.getLogger(args.facility), record)
         """Default output message format is also hard-coded"""
         if args.vhost:
-            adapter.info('%s %s (%s) "%s" %s %s "%s"' % (record['ipaddr'], args.vhost, record['host'], record['request'],
-                record['status'], record['size'], record['referer']))
+            adapter.info('%s %s (%s) "%s" %s %s "%s"' % tuple(record[f] for f in "ipaddr vhost host request status size referer".split()))
         else:
-            adapter.info('%s %s "%s" %s %s "%s"' % (record['ipaddr'], record['host'], record['request'],
-                record['status'], record['size'], record['referer']))
+            adapter.info('%s %s "%s" %s %s "%s"' % tuple(record[f] for f in "ipaddr host request status size referer".split()))
 
