@@ -27,9 +27,7 @@ logger = logging.getLogger(args.facility)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(graypy.GELFHandler(args.host, int(args.port), debugging_fields=False))
 
-while True:
-    line = sys.stdin.readline()
-    if not line: break
+for line in iter(sys.stdin.readline, b''):
     print line.rstrip()
 
     matches = re.search(regexp, line)

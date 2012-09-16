@@ -27,16 +27,13 @@ As specified above, this requires the following line in apache configuration:
 regexp = '^(?P<host>\S+) (?P<ipaddr>\S+) (?P<username>\S+) "(?P<request>[^"]*)" (?P<status>\S+) (?P<size>\S+) "(?P<referer>[^"]*)"$'
 
 baserecord = {}
-if args.vhost:
-    baserecord['vhost'] = args.vhost
+if args.vhost: baserecord['vhost'] = args.vhost
 
 logger = logging.getLogger(args.facility)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(graypy.GELFHandler(args.host, int(args.port), debugging_fields=False))
 
-while True:
-    line = sys.stdin.readline()
-    if not line: break
+for line in iter(sys.stdin.readline, b''):
     matches = re.search(regexp, line)
     if matches:
         record = baserecord
@@ -44,7 +41,7 @@ while True:
         adapter = logging.LoggerAdapter(logging.getLogger(args.facility), record)
         """Default output message format is also hard-coded"""
         if args.vhost:
-            adapter.info('%s %s (%s) "%s" %s %s "%s"' % tuple(record[f] for f in "ipaddr vhost host request status size referer".split()))
+            adapter.info('%s %s (%s) "%s" %s %s "%s"' % tuple(record[f] for f in ["ipaddr", "vhost", "host", "request", "status", "size", "referer"]))
         else:
-            adapter.info('%s %s "%s" %s %s "%s"' % tuple(record[f] for f in "ipaddr host request status size referer".split()))
+            adapter.info('%s %s "%s" %s %s "%s"' % tuple(record[f] for f in ["ipaddr", "host", "request", "status", "size", "referer"]))
 

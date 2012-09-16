@@ -36,14 +36,14 @@ def reap_child(proc):
     interrupt_main()
 
 proc = Popen(['tail', '-n', '0', '-F', args.filepath], stderr=open('/dev/null', 'w'), stdout=PIPE, bufsize=1)
-"""We should kill child process when master process exits or gets killed"""
+# We should kill child process when master process exits or gets killed
 atexit.register(proc.kill)
 signal(SIGTERM, lambda signum, stack_frame: exit(1))
 
 queue = Queue()
 thread_worker = Thread(target=enqueue_output, args=(proc.stdout, queue))
 thread_reaper = Thread(target=reap_child, args=(proc,))
-for thread in [ thread_worker, thread_reaper ]:
+for thread in (thread_worker, thread_reaper):
     thread.daemon = True
     thread.start()
 
@@ -64,22 +64,22 @@ message = ''
 while True:
     try: line = queue.get_nowait()
     except Empty:
-        """No lines found, flush message to graylog2 server and sleep"""
+        # No lines found, flush message to graylog2 server and sleep
         flush_message(message)
         message = ''
         sleep(1)
         continue
     else:
-        """New line found"""
+        # New line found
         matches = re.search('^\[\d\d-...-\d{4} \d\d:\d\d:\d\d\] (.*)', line)
         if matches:
-            """So, it's a new message - we should send the previous one and start accumulating a new one"""
+            # So, it's a new message - we should send the previous one and start accumulating a new one
             flush_message(message)
             if args.vhost:
                 message = "%s: %s" % (args.vhost, matches.group(1))
             else:
                 message = matches.group(1)
         else:
-            """Not a new message - so simply add a line to accumulated message"""
+            # Not a new message - so simply add a line to accumulated message
             message += line
 
