@@ -8,7 +8,7 @@ A set of python scripts to deliver Apache and PHP log files to graylog2. Scripts
 
 Requirements:
 * python-argparse
-* python-graypy
+* python-graypy (0.2.8+)
 
 Usage example
 -------------
