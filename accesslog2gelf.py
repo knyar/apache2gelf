@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser(description='Reads apache access log on stdin a
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="Add the following to apache virtualhost configuration to use:\n" +
         'CustomLog "||/path/to/accesslog2gelf.py" "%V %h %u \\"%r\\" %>s %b \\"%{Referer}i\\""')
-parser.add_argument('--localname', dest='localname', default=None, help='local host name (default: `hostname`')
+parser.add_argument('--localname', dest='localname', default=None, help='local host name (default: `hostname`)')
 parser.add_argument('--host', dest='host', default='localhost', help='graylog2 server hostname (default: localhost)')
 parser.add_argument('--port', dest='port', default='12201', help='graylog2 server port (default: 12201)')
 parser.add_argument('--facility', dest='facility', default='access_log', help='logging facility (default: access_log)')

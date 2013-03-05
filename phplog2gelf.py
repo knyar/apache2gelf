@@ -16,7 +16,7 @@ from signal import signal, SIGTERM
 # https://github.com/knyar/apache2gelf
 
 parser = argparse.ArgumentParser(description='Watches php error log and delivers messages to graylog2 server via GELF')
-parser.add_argument('--localname', dest='localname', default=None, help='local host name (default: `hostname`')
+parser.add_argument('--localname', dest='localname', default=None, help='local host name (default: `hostname`)')
 parser.add_argument('--host', dest='host', default='localhost', help='graylog2 server hostname (default: localhost)')
 parser.add_argument('--port', dest='port', default='12201', help='graylog2 server port (default: 12201)')
 parser.add_argument('--facility', dest='facility', default='php_log', help='logging facility (default: php_log)')
