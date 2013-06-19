@@ -32,6 +32,7 @@ Command line parameters
 -----------------------
 
 All scripts understand the following command line parameters:
+* `--localname` to specify a custom hostname
 * `--host` to specify graylog2 server
 * `--port` to specify graylog2 GELF port
 * `--facility` to specify log facility
